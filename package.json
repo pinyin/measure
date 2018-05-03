@@ -1,0 +1,43 @@
+{
+  "name": "@pinyin/measure",
+  "version": "0.0.2",
+  "description": "React HOC for measuring the size of a Component",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepublishOnly": "rm -rf dist && npx tsc",
+    "test": "npx jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pinyin/measure.git"
+  },
+  "keywords": [
+    "measurecript"
+  ],
+  "author": "Bo Bao <bob432091@gmail.com> (https://github.com/pinyin)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pinyin/measure/issues"
+  },
+  "homepage": "https://github.com/pinyin/measure#readme",
+  "devDependencies": {
+    "typescript": "^2.8.3"
+  },
+  "peerDependencies": {
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2"
+  },
+  "dependencies": {
+    "@pinyin/maybe": "0.0.5",
+    "@pinyin/react": "0.0.3",
+    "@pinyin/types": "0.0.2",
+    "@types/react": "^16.3.13",
+    "@types/react-dom": "^16.0.5",
+    "hoist-non-react-statics": "^2.5.0",
+    "resize-observer-polyfill": "^1.5.0"
+  }
+}
