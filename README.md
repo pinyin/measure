@@ -10,9 +10,9 @@ React HOC for measuring the size of a Component
 
 `measure(ComponentA): ComponentB`
 
-ComponentA can be either a string(like `div` and `img`) or class of React Component.
+ComponentA can be either a string(like `div` and `img`) or a React Component class.
 
-The Returned `ComponentB` will accept the same props as ComponentA, and the following more: 
+The returned `ComponentB` will accept the same props as ComponentA, and the following more: 
 
 ```typescript jsx
 export type MeasureProps<T> = {
@@ -35,6 +35,8 @@ const Div = measure('div')
 <Div style={xxxx} onClick={xxxx} onHeightChange={xxx} onWidthChange={xxx}>
 </Div>
 ```
+
+Custom created React Component should also work as expected.
 
 ## License
 
