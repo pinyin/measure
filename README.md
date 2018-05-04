@@ -6,13 +6,23 @@ React HOC for measuring the size of a Component
 
 `npm install @pinyin/measure --save`
 
+It should support TypeScript out of the box. If not, please submit an issue.
+
 ## Usage
 
-`measure(ComponentA): ComponentB`
+```typescript jsx
+import {measure} from '@pinyin/measure'
 
-ComponentA can be either a HTML tag name (like `div` and `img`) or a React Component class.
+class ComponentA extends React.Component { ... }
+// or
+const ComponentA = 'div'
 
-The returned `ComponentB` will accept the same props as ComponentA, and the following more props: 
+const ComponentB = measure(ComponentA)
+```
+
+`measure()` accepts either a HTML tag name (like `div` and `img`) or a React Component class.
+
+The returned Component will accept the same props as input component, and a few more props: 
 
 ```typescript jsx
 export type MeasureProps<T> = {
@@ -21,9 +31,10 @@ export type MeasureProps<T> = {
     innerRef?: (ref: T) => void;
 } 
 ```
+Use `innerRef` to get a `HTMLElement` (when the corresponding input of `measure()` is a string) or a React Component instance (when the input is a React Component class).
 Only function ref is supported at this moment. Please submit an issue if you need more options.
 
-For example, you may easily create a component by
+For example, you can easily create a component by
 
 ```typescript jsx
 const Div = measure('div')
@@ -42,7 +53,7 @@ Manually created React Component should also work as expected.
 
 This component is a thin wrapper around [resize-observer-polyfill](https://github.com/que-etc/resize-observer-polyfill), with all the limits included.
 
-If the wrapped component returns multiple ReactElement, this HOC will measure the first one.
+If the wrapped component returns multiple DOM nodes, this HOC will measure the first one.
 
 ## License
 
