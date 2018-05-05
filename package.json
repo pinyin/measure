@@ -1,6 +1,6 @@
 {
   "name": "@pinyin/measure",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "React HOC for measuring the size of a Component",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
