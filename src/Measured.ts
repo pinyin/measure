@@ -1,5 +1,8 @@
-import {PropsOf, Referable} from '@pinyin/react'
-import {ComponentClass} from 'react'
-import {MeasureProps} from './MeasureProps'
+import {PropsOf, RefOf} from '@pinyin/react'
+import {ClassAttributes, ComponentType} from 'react'
+import {Measurable} from './Measurable';
+import {ResizeEventProps} from './ResizeEventProps';
 
-export type Measured<A extends Referable> = ComponentClass<PropsOf<A> & MeasureProps<A>>
+export type Measured<C extends Measurable> = ComponentType<PropsOf<C> &
+    ResizeEventProps &
+    ClassAttributes<RefOf<C>>>

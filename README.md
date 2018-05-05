@@ -22,25 +22,23 @@ const ComponentB = measure(ComponentA)
 
 `measure()` accepts either a HTML tag name (like `div` and `img`) or a React Component class.
 
-The returned Component will accept the same props as input component, and a few more props: 
+The returned Component will accept all the props from the input component, and a few more: 
 
 ```typescript jsx
 export type MeasureProps<T> = {
     onHeightChange?: (newHeight: number)=> void
     onWidthChange?: (newWidth: number)=> void
-    innerRef?: (ref: T) => void;
 } 
 ```
-Use `innerRef` to get a `HTMLElement` (when the corresponding input of `measure()` is a string) or a React Component instance (when the input is a React Component class).
-Only function ref is supported at this moment. Please submit an issue if you need more options.
+`ref` should work as expected.
 
-For example, you can easily create a component by
+For example, you can create a component by
 
 ```typescript jsx
 const Div = measure('div')
 ```
 
-... and use `Div` just like `div`, but with two new callbacks in props
+... and use `Div` just like `div`, but with two more callbacks in props
 
 ```typescript jsx
 <Div style={xxxx} onClick={xxxx} onHeightChange={xxx} onWidthChange={xxx}>
@@ -51,9 +49,9 @@ Manually created React Component should also work as expected.
 
 ## Limits
 
-This component is a thin wrapper around [resize-observer-polyfill](https://github.com/que-etc/resize-observer-polyfill), with all the limits included.
+This component is a thin wrapper around [resize-observer-polyfill](https://github.com/que-etc/resize-observer-polyfill), along with all the limits.
 
-If the wrapped component returns multiple DOM nodes, this HOC will measure the first one.
+If the wrapped component renders multiple DOM nodes, this HOC will only measure the first node in order.
 
 ## License
 
