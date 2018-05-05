@@ -1,16 +1,16 @@
 import {assume, existing, Maybe, nothing} from '@pinyin/maybe'
-import {PropsOf, RefOf} from '@pinyin/react'
-import {Component, ComponentClass, createElement, forwardRef, Ref} from 'react'
+import {forwardInnerRef, PropsOf, RefOf} from '@pinyin/react'
+import {Component, ComponentClass, createElement} from 'react'
 import {findDOMNode} from 'react-dom'
 import ResizeObserver from 'resize-observer-polyfill'
 import {Measurable} from './Measurable';
 import {Measured} from './Measured';
-import {ResizeEventProps} from './ResizeEventProps'
+import {ResizeEvents} from './ResizeEvents'
 import hoistNonReactStatics = require('hoist-non-react-statics')
 
 // TODO Support SFC.  We don't really need a ref to the wrapped component.
 export function measure<C extends Measurable>(Wrapped: C): Measured<C> {
-    class HOC extends Component<HOCProps<C>> {
+    class HOC extends Component<PropsOf<C> & ResizeEvents> {
         static displayName: string = `Measured<${
             typeof Wrapped === 'string' ?
                 Wrapped :
@@ -18,11 +18,15 @@ export function measure<C extends Measurable>(Wrapped: C): Measured<C> {
             }>`
 
         render() {
+
             const props: PropsOf<C> = Object.assign(
                 {},
-                this.props.innerProps,
+                this.props,
                 {ref: (it: any) => this.updateRef(it)}
             ) as any
+            delete props['innerRef']
+            delete props['onHeightChange']
+            delete props['onWidthChange']
 
             return createElement(
                 Wrapped,
@@ -34,18 +38,18 @@ export function measure<C extends Measurable>(Wrapped: C): Measured<C> {
         private observer: ResizeObserver
         private observing: Maybe<Element>
 
-        constructor(props: HOCProps<C>) {
+        constructor(props: PropsOf<C> & ResizeEvents) {
             super(props)
 
             this.observer = new ResizeObserver(
                 (entries: ResizeObserverEntry[], observer: ResizeObserver) => {
                     const height = entries[0].contentRect.height
                     const width = entries[0].contentRect.width
-                    if (existing(this.props.resizeEvents.onHeightChange)) {
-                        this.props.resizeEvents.onHeightChange(height)
+                    if (existing(this.props.onHeightChange)) {
+                        this.props.onHeightChange(height)
                     }
-                    if (existing(this.props.resizeEvents.onWidthChange)) {
-                        this.props.resizeEvents.onWidthChange(width)
+                    if (existing(this.props.onWidthChange)) {
+                        this.props.onWidthChange(width)
                     }
                 }
             )
@@ -88,25 +92,6 @@ export function measure<C extends Measurable>(Wrapped: C): Measured<C> {
         hoistNonReactStatics(HOC, Component as any)
     }
 
-    return forwardRef<RefOf<C>, PropsOf<C> & ResizeEventProps>((props, innerRef) => {
-        const {onHeightChange, onWidthChange, ...innerProps} = props as any // TODO
-
-        return createElement(
-            HOC,
-            Object.assign(
-                {innerProps},
-                {innerRef},
-                {resizeEvents: {onHeightChange, onWidthChange}}
-            ),
-            props.children
-        )
-    })
+    return forwardInnerRef(HOC)
 }
-
-export type HOCProps<C extends Measurable> = {
-    innerProps: PropsOf<C>
-    innerRef?: Ref<RefOf<C>>
-    resizeEvents: ResizeEventProps
-}
-
 
