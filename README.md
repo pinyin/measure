@@ -53,6 +53,10 @@ This component is a thin wrapper around [resize-observer-polyfill](https://githu
 
 If the wrapped component renders multiple DOM nodes, this HOC will only measure the first node in order.
 
+## Known issues
+
+If the wrapped component removes root DOM node after rendering, this HOC will stop working.
+
 ## License
 
 MIT

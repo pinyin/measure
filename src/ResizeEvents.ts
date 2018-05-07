@@ -1,5 +1,4 @@
-import {EventHandler} from '@pinyin/react'
-import {px} from '@pinyin/types'
+import {EventHandler, px} from '@pinyin/types'
 
 export type ResizeEvents = {
     onHeightChange?: EventHandler<px>

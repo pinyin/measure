@@ -18,7 +18,6 @@ export function measure<C extends Measurable>(Wrapped: C): Measured<C> {
             }>`
 
         render() {
-
             const props: PropsOf<C> = Object.assign(
                 {},
                 this.props,
