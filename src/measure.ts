@@ -1,6 +1,6 @@
-import {assume, existing, Maybe, nothing} from '@pinyin/maybe'
+import {existing} from '@pinyin/maybe'
 import {forwardInnerRef, PropsOf, RefOf} from '@pinyin/react'
-import {Component, ComponentClass, createElement} from 'react'
+import {Component, ComponentClass, createElement, Ref} from 'react'
 import {findDOMNode} from 'react-dom'
 import ResizeObserver from 'resize-observer-polyfill'
 import {Measurable} from './Measurable';
@@ -10,7 +10,7 @@ import hoistNonReactStatics = require('hoist-non-react-statics')
 
 // TODO Support SFC.  We don't really need a ref to the wrapped component.
 export function measure<C extends Measurable>(Wrapped: C): Measured<C> {
-    class HOC extends Component<PropsOf<C> & ResizeEvents> {
+    class HOC extends Component<PropsOf<C> & ResizeEvents & { innerRef: Ref<RefOf<C>> }> {
         static displayName: string = `Measured<${
             typeof Wrapped === 'string' ?
                 Wrapped :
@@ -21,7 +21,7 @@ export function measure<C extends Measurable>(Wrapped: C): Measured<C> {
             const props: PropsOf<C> = Object.assign(
                 {},
                 this.props,
-                {ref: (it: any) => this.updateRef(it)}
+                {ref: this.props.innerRef}
             ) as any
             delete props['innerRef']
             delete props['onHeightChange']
@@ -34,8 +34,14 @@ export function measure<C extends Measurable>(Wrapped: C): Measured<C> {
             )
         }
 
-        private observer: ResizeObserver
-        private observing: Maybe<Element>
+        componentDidMount() {
+            const root = findDOMNode(this) as Element // FIXME
+            this.observer.observe(root)
+        }
+
+        componentWillUnmount() {
+            this.observer.disconnect()
+        }
 
         constructor(props: PropsOf<C> & ResizeEvents) {
             super(props)
@@ -54,37 +60,7 @@ export function measure<C extends Measurable>(Wrapped: C): Measured<C> {
             )
         }
 
-        componentWillUnmount() {
-            this.observer.disconnect()
-        }
-
-        private updateRef(ref: Maybe<RefOf<C>>) {
-            if (existing(this.props.innerRef)) {
-                if (typeof this.props.innerRef === 'function') {
-                    this.props.innerRef(ref || null) // TODO what's the difference between null and undefined?
-                } else if (typeof this.props.innerRef === 'object') {
-                    (this.props.innerRef as any).current = ref // FIXME this is probably bad
-                } else {
-                    throw new Error(`String ref is not supported. Provided value is ${this.props.innerRef}.`)
-                }
-            }
-
-            if (existing(this.observing)) {
-                this.observer.unobserve(this.observing)
-                this.observing = nothing
-            }
-
-            const dom: Maybe<Element> = assume(ref,
-                ref => ref instanceof Element
-                    ? ref
-                    : findDOMNode(ref) as Element
-            )
-
-            if (existing(dom)) {
-                this.observer.observe(dom)
-                this.observing = dom
-            }
-        }
+        private observer: ResizeObserver
     }
 
     if (typeof Wrapped !== 'string') {

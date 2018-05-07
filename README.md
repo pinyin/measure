@@ -55,7 +55,7 @@ If the wrapped component renders multiple DOM nodes, this HOC will only measure 
 
 ## Known issues
 
-If the wrapped component removes root DOM node after rendering, this HOC will stop working.
+If the wrapped component removes root DOM node after mounting, this HOC will stop working.
 
 ## License
 

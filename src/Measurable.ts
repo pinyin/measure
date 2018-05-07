@@ -1,3 +1,3 @@
-import {ComponentClass, ReactHTML, StatelessComponent} from 'react'
+import {ComponentType, ReactHTML} from 'react'
 
-export type Measurable = ComponentClass<any> | StatelessComponent<any> | keyof ReactHTML
+export type Measurable = ComponentType<any> | keyof ReactHTML

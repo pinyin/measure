@@ -4,6 +4,7 @@
     "target": "es5",
     "module": "commonjs",
     "esModuleInterop": true,
+    "inlineSourceMap": true,
     "declaration": true,
     "strict": true,
     "declarationDir": "dist",
@@ -14,13 +15,7 @@
       "dom"
     ]
   },
-  "exclude": [
-    "node_modules",
-    ".idea",
-    ".vscode",
-    "build",
-    "dist",
-    "**/*.spec.*",
-    "**/*.test.*"
+  "include": [
+    "./index.ts"
   ]
 }
