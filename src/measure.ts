@@ -1,4 +1,5 @@
-import {existing} from '@pinyin/maybe'
+import {arrayFromNodeList} from '@pinyin/dom'
+import {assume, existing, Maybe, notExisting, nothing} from '@pinyin/maybe'
 import {forwardInnerRef, PropsOf, RefOf} from '@pinyin/react'
 import {Component, ComponentClass, createElement, Ref} from 'react'
 import {findDOMNode} from 'react-dom'
@@ -36,31 +37,57 @@ export function measure<C extends Measurable>(Wrapped: C): Measured<C> {
 
         componentDidMount() {
             const root = findDOMNode(this) as Element // FIXME
-            this.observer.observe(root)
+            const parent = assume(root, it => root.parentElement)
+            if (notExisting(parent)) {
+                throw new Error("Measured component must render at least one DOM node when mounted.")
+            }
+
+            this.attachObserver.observe(parent, {childList: true, subtree: false})
+            this.resizeObserver.observe(root)
+            this.observing = root
         }
 
         componentWillUnmount() {
-            this.observer.disconnect()
+            this.resizeObserver.disconnect()
+            this.attachObserver.disconnect()
         }
 
         constructor(props: PropsOf<C> & ResizeEvents) {
             super(props)
 
-            this.observer = new ResizeObserver(
-                (entries: ResizeObserverEntry[], observer: ResizeObserver) => {
-                    const height = entries[0].contentRect.height
-                    const width = entries[0].contentRect.width
-                    if (existing(this.props.onHeightChange)) {
-                        this.props.onHeightChange(height)
-                    }
-                    if (existing(this.props.onWidthChange)) {
-                        this.props.onWidthChange(width)
-                    }
+            this.resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[],
+                                                      observer: ResizeObserver) => {
+                const height = entries[0].contentRect.height
+                const width = entries[0].contentRect.width
+                if (existing(this.props.onHeightChange)) {
+                    this.props.onHeightChange(height)
                 }
-            )
+                if (existing(this.props.onWidthChange)) {
+                    this.props.onWidthChange(width)
+                }
+            })
+            this.attachObserver = new MutationObserver((mutations: MutationRecord[],
+                                                        observer: MutationObserver) => {
+                const {observing} = this
+                if (existing(observing)) {
+                    const isDetached = mutations.some(record =>
+                        arrayFromNodeList(record.removedNodes).some(node => node === observing)
+                    )
+                    if (!isDetached) { return }
+                    this.resizeObserver.unobserve(observing)
+                    this.observing = nothing
+                } else {
+                    const element = findDOMNode(this) as Element
+                    if (notExisting(element)) { return }
+                    this.resizeObserver.observe(element)
+                    this.observing = element
+                }
+            })
         }
 
-        private observer: ResizeObserver
+        private observing: Maybe<Element>
+        private resizeObserver: ResizeObserver
+        private attachObserver: MutationObserver
     }
 
     if (typeof Wrapped !== 'string') {

@@ -1,6 +1,6 @@
 {
   "name": "@pinyin/measure",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "React HOC for measuring the size of a Component",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -30,9 +30,9 @@
   },
   "homepage": "https://github.com/pinyin/measure#readme",
   "devDependencies": {
+    "typescript": "^2.8.3",
     "@types/react": "^16.3.13",
     "@types/react-dom": "^16.0.5",
-    "typescript": "^2.8.3",
     "@pinyin/types": "^0.0.3"
   },
   "peerDependencies": {
@@ -40,6 +40,7 @@
     "react-dom": "^16.3.2"
   },
   "dependencies": {
+    "@pinyin/dom": "0.0.2",
     "@pinyin/maybe": "^0.0.5",
     "@pinyin/react": "^0.0.9",
     "hoist-non-react-statics": "^2.5.0",

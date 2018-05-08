@@ -55,7 +55,9 @@ If the wrapped component renders multiple DOM nodes, this HOC will only measure 
 
 ## Known issues
 
-If the wrapped component removes root DOM node after mounting, this HOC will stop working.
+The wrapped component must render at least one DOM node when mounted. This limitation does not apply to updates after mounted.
+
+`innerRef` key of the props of the wrapped component, even if provided, will be ignored.
 
 ## License
 
