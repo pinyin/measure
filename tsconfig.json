@@ -2,6 +2,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "target": "es5",
+    "jsx": "react",
     "module": "commonjs",
     "esModuleInterop": true,
     "inlineSourceMap": true,
