@@ -1,1 +1,1 @@
-export {measure} from './src/measure'
+export {Measure} from './src/measure'

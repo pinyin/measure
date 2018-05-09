@@ -1,6 +1,6 @@
 {
   "name": "@pinyin/measure",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "React component for measuring the size of a Component",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -19,7 +19,6 @@
   "keywords": [
     "react",
     "react component",
-    "HOC",
     "measure",
     "resize"
   ],
@@ -40,7 +39,7 @@
   },
   "dependencies": {
     "@pinyin/types": "^0.0.9",
-    "@pinyin/dom": "0.0.2",
+    "@pinyin/dom": "^0.0.2",
     "@pinyin/maybe": "^0.0.5",
     "resize-observer-polyfill": "^1.5.0"
   }

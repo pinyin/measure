@@ -13,7 +13,7 @@ It should support TypeScript out of the box. If not, please submit an issue.
 ```typescript jsx
 import {Measure} from '@pinyin/measure'
 
-<Measure onHeightChange={(newHeight: number)=> xxxx} onWidthChange={(newWidth: px)=> xxxx}>
+<Measure onHeightChange={(newHeight: number)=> xxxx} onWidthChange={(newWidth: number)=> xxxx}>
    <AnyMeasuredComponent/> // only the first DOM node is measured
 </Measure>
 
@@ -21,13 +21,19 @@ import {Measure} from '@pinyin/measure'
 
 This component does not do anything to the DOM structure.
 
-## Limits
+Unlike many other solutions, this component will auto find a measuring target after the previous target was detached from document.
+
+## Limits & Known Issues
 
 This component is a thin wrapper around [resize-observer-polyfill](https://github.com/que-etc/resize-observer-polyfill), along with all the limits.
 
 All children are rendered, but only the first DOM node in children is measured, so it's best to provide `<Measure/>` with a single child.
 
 Portals in children components are not supported.
+
+Once this component find a measurable node (that is, the first and topmost DOM node rendered by its children), it will not change measuring target until the previous target is removed from document.
+
+Text nodes as measure targets are not supported yet and may cause unexpected behavior.
 
 ## License
 
