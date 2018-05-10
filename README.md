@@ -1,6 +1,6 @@
 # measure
 
-React component for measuring the size of a Component
+React component for measuring the size of a component
 
 ## Install
 
@@ -19,9 +19,9 @@ import {Measure} from '@pinyin/measure'
 
 ```
 
-This component does not do anything to the DOM structure.
+This component does not affect DOM structure.
 
-Unlike many other solutions, this component will auto find a measuring target after the previous target was detached from document.
+Unlike many other solutions, this component will auto find another measuring target after the previous target was detached from document.
 
 ## Limits & Known Issues
 
@@ -31,9 +31,9 @@ All children are rendered, but only the first DOM node in children is measured, 
 
 Portals in children components are not supported.
 
-Once this component find a measurable node (that is, the first and topmost DOM node rendered by its children), it will not change measuring target until the previous target is removed from document.
+Once this component found a measurable node (the first and topmost DOM node rendered by its children), it will not change measuring target until the previous target is removed from document.
 
-Text nodes as measure targets are not supported yet and may cause unexpected behavior.
+Text nodes as measuring targets are not supported yet and may cause unexpected behavior.
 
 ## License
 

@@ -1,6 +1,6 @@
 {
   "name": "@pinyin/measure",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "React component for measuring the size of a Component",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,7 +18,7 @@
   },
   "keywords": [
     "react",
-    "react component",
+    "react-component",
     "measure",
     "resize"
   ],

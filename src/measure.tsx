@@ -68,19 +68,21 @@ export class Measure extends React.Component<Props, State> {
 
     private attachObserver: MutationObserver = new MutationObserver(
         (mutations: MutationRecord[], observer: MutationObserver) => {
-            const {observing} = this
-            if (existing(observing)) {
+            if (existing(this.observing)) {
                 const isDetached = mutations.some(record =>
-                    arrayFromNodeList(record.removedNodes).some(node => node === observing)
+                    arrayFromNodeList(record.removedNodes).some(node => node === this.observing)
                 )
-                if (!isDetached) { return }
-                this.resizeObserver.unobserve(observing)
-                this.observing = nothing
-            } else {
+                if (isDetached) {
+                    this.resizeObserver.unobserve(this.observing)
+                    this.observing = nothing
+                }
+            }
+            if (notExisting(this.observing)) {
                 const element = findDOMNode(this) as Element
-                if (notExisting(element)) { return }
-                this.resizeObserver.observe(element)
-                this.observing = element
+                if (existing(element)) {
+                    this.resizeObserver.observe(element)
+                    this.observing = element
+                }
             }
         }
     )
