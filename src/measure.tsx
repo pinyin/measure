@@ -1,6 +1,7 @@
+///<reference types='resize-observer-polyfill'/>
 import {arrayFromNodeList} from '@pinyin/dom'
 import {assume, existing, Maybe, notExisting, nothing} from '@pinyin/maybe'
-import {EventHandler, px} from '@pinyin/types'
+import {EventHandler} from '@pinyin/types'
 import {default as React} from 'react'
 import {findDOMNode} from 'react-dom'
 import ResizeObserver from 'resize-observer-polyfill'
@@ -55,13 +56,8 @@ export class Measure extends React.Component<Props, State> {
 
     private resizeObserver: ResizeObserver = new ResizeObserver(
         (entries: ResizeObserverEntry[], observer: ResizeObserver) => {
-            const height = entries[0].contentRect.height
-            const width = entries[0].contentRect.width
-            if (existing(this.props.onHeightChange)) {
-                this.props.onHeightChange(height)
-            }
-            if (existing(this.props.onWidthChange)) {
-                this.props.onWidthChange(width)
+            if (existing(this.props.onResize)) {
+                this.props.onResize(entries)
             }
         }
     )
@@ -89,10 +85,10 @@ export class Measure extends React.Component<Props, State> {
 }
 
 export type Props = {
-    onHeightChange?: EventHandler<px>
-    onWidthChange?: EventHandler<px>
+    onResize?: EventHandler<Array<ResizeObserverEntry>>
 }
 
 export type State = {
     renderingAnchor: boolean
 }
+

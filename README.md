@@ -13,11 +13,31 @@ It should support TypeScript out of the box. If not, please submit an issue.
 ```typescript jsx
 import {Measure} from '@pinyin/measure'
 
-<Measure onHeightChange={(newHeight: number)=> xxxx} onWidthChange={(newWidth: number)=> xxxx}>
+<Measure onResize={(resizeObserverEntryArray)=> xx}>
    <AnyMeasuredComponent/> // only the first DOM node is measured
 </Measure>
 
 ```
+
+`onResize` receives an array of `ResizeObserverEntry`
+
+```typescript jsx
+interface ResizeObserverEntry {
+    readonly target: Element;
+    readonly contentRect: DOMRectReadOnly;
+}
+
+interface DOMRectReadOnly {
+    readonly bottom: number;
+    readonly height: number;
+    readonly left: number;
+    readonly right: number;
+    readonly top: number;
+    readonly width: number;
+    readonly x: number;
+    readonly y: number;
+}
+``` 
 
 This component does not affect DOM structure.
 
@@ -34,6 +54,10 @@ Portals in children components are not supported.
 Once this component found a measurable node (the first and topmost DOM node rendered by its children), it will not change measuring target until the previous target is removed from document.
 
 Text nodes as measuring targets are not supported yet and may cause unexpected behavior.
+
+## Plan
+
+Support measuring multiple DOM nodes.
 
 ## License
 
