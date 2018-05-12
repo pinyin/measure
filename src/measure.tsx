@@ -1,7 +1,7 @@
 ///<reference types='resize-observer-polyfill'/>
 import {arrayFromNodeList} from '@pinyin/dom'
-import {assume, existing, Maybe, notExisting, nothing} from '@pinyin/maybe'
-import {EventHandler} from '@pinyin/types'
+import {assume, existing, Maybe, notExisting} from '@pinyin/maybe'
+import {EventHandler, nothing} from '@pinyin/types'
 import {default as React} from 'react'
 import {findDOMNode} from 'react-dom'
 import ResizeObserver from 'resize-observer-polyfill'
