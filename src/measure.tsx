@@ -59,6 +59,16 @@ export class Measure extends React.Component<Props, State> {
             if (existing(this.props.onResize)) {
                 this.props.onResize(entries)
             }
+            entries.forEach(entry => {
+                if (entry.target === this.observing) {
+                    if (existing(this.props.onWidthUpdate)) {
+                        this.props.onWidthUpdate(entry.contentRect.width)
+                    }
+                    if (existing(this.props.onHeightUpdate)) {
+                        this.props.onHeightUpdate(entry.contentRect.height)
+                    }
+                }
+            })
         }
     )
 
@@ -86,6 +96,8 @@ export class Measure extends React.Component<Props, State> {
 
 export type Props = {
     onResize?: EventHandler<Array<ResizeObserverEntry>>
+    onWidthUpdate?: EventHandler<number>
+    onHeightUpdate?: EventHandler<number>
 }
 
 export type State = {
